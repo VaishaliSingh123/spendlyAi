@@ -66,6 +66,21 @@
     </div>
 </section>
 
+<div class="lp-modal" id="demo-modal" role="dialog" aria-modal="true" aria-labelledby="demo-title" hidden>
+    <div class="lp-modal-dialog">
+        <button type="button" class="lp-modal-close" aria-label="Close video">&times;</button>
+        <h2 class="lp-modal-title" id="demo-title">See Spendly in action</h2>
+        <div class="lp-video">
+            <iframe id="demo-video"
+                    data-src="https://www.youtube.com/embed/aqz-KE-bpKQ"
+                    src="about:blank"
+                    title="Spendly demo video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
 <section class="features">
     <div class="features-inner">
         <div class="feature-card">
@@ -94,4 +109,41 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (function () {
+        var modal = document.getElementById('demo-modal');
+        var openBtn = document.getElementById('see-how-it-works');
+        var video = document.getElementById('demo-video');
+        var closeBtn = modal.querySelector('.lp-modal-close');
+
+        function openModal() {
+            video.src = video.dataset.src;
+            modal.hidden = false;
+            document.body.classList.add('lp-modal-open');
+            closeBtn.focus();
+        }
+
+        function closeModal() {
+            // Pointing the iframe at a blank page stops the video entirely.
+            video.src = 'about:blank';
+            modal.hidden = true;
+            document.body.classList.remove('lp-modal-open');
+            openBtn.focus();
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.hidden) closeModal();
+        });
+    })();
+</script>
 {% endblock %}
